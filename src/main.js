@@ -1,7 +1,5 @@
-import { render } from '@testing-library/react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-
 
 const scene = new THREE.Scene();
 
@@ -12,8 +10,13 @@ const cubeMesh = new THREE.Mesh(
   cubeGeometry, 
   cubeMaterial
 )
-
 scene.add(cubeMesh)
+
+cubeMesh.position.y = 1;
+
+const axesHelper = new THREE.AxesHelper(2);
+scene.add(axesHelper);
+
 
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight,
@@ -42,7 +45,7 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
-renderer.setPixelRatio(window.devicePixelRatio)
+renderer.setPixelRatio(maxPixelRatio)
 
 const controls = new OrbitControls( camera, canvas)
 controls.enableDamping = true;
