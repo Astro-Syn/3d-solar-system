@@ -3,17 +3,26 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
 
+
 const scene = new THREE.Scene();
 
-const cubeGeometry = new THREE.BoxGeometry(1,1,1)
-const cubeMaterial = new THREE.MeshBasicMaterial({color: "green"})
+//create custom geometry
 
-const cubeMesh = new THREE.Mesh(
-  cubeGeometry, 
-  cubeMaterial
-)
+//const verticies = new Float32Array([0, 0, 0, 0, 2, 0, 2, 0, 0])
+
+//const bufferAttribute = new THREE.BufferAttribute(verticies, 3)
+
+//const geometry = new THREE.SphereGeometry(1, 16, 16);
+//geometry.setAttribute('position', bufferAttribute)
+const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16)
+
+//const cubeGeometry = new THREE.BoxGeometry(1,1,1)
+const cubeMaterial = new THREE.MeshBasicMaterial({color: "green", wireframe: true});
+const cubeMesh = new THREE.Mesh(geometry, cubeMaterial);
 
 scene.add(cubeMesh)
+
+
 
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight,
