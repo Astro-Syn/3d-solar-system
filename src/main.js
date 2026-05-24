@@ -1,4 +1,3 @@
-import { render } from '@testing-library/react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
@@ -51,7 +50,7 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 const maxPixelRatio = Math.min(window.devicePixelRatio, 2);
-renderer.setPixelRatio(window.devicePixelRatio)
+renderer.setPixelRatio(maxPixelRatio)
 
 const controls = new OrbitControls( camera, canvas)
 controls.enableDamping = true;
