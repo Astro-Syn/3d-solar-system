@@ -1,5 +1,29 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { Pane } from 'tweakpane';
+
+
+
+
+const pane = new Pane();
+
+const params = {
+  color: '#00ff00',
+  lightIntensity: 1
+};
+
+pane.addBinding(params, 'color')
+.on('change', (ev) => {
+  material.color.set(ev.value);
+});
+
+pane.addBinding(params, 'lightIntensity', {
+  min: 0,
+  max: 10
+}).on('change', (ev) => {
+  pointLight.intensity = ev.value;
+});
+
 
 
 
@@ -14,17 +38,47 @@ const scene = new THREE.Scene();
 //const geometry = new THREE.SphereGeometry(1, 16, 16);
 //geometry.setAttribute('position', bufferAttribute)
 const geometry = new THREE.BoxGeometry(1, 1, 1);
+const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
+const material  = new THREE.MeshStandardMaterial();
+material.color = new THREE.Color('green');
+
+pane.addBinding(material, 'metalness', {
+  min: 0,
+  max: 1, 
+  step: 0.01
+})
+
+pane.addBinding(material, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.01
+})
+
 
 //const cubeGeometry = new THREE.BoxGeometry(1,1,1)
-const cubeMaterial = new THREE.MeshBasicMaterial({color: "aqua", transparent: true, opacity: 0.5});
-const mesh = new THREE.Mesh(geometry, cubeMaterial);
-const mesh2 = new THREE.Mesh(geometry, cubeMaterial);
+//const cubeMaterial = new THREE.MeshBasicMaterial({color: "white"});
+const mesh = new THREE.Mesh(geometry, material);
+const mesh2 = new THREE.Mesh(torusKnotGeometry, material);
+
+
+//material
+
 
 mesh2.position.x = 2;
+
 
 scene.add(mesh);
 scene.add(mesh2);
 
+
+//light
+
+const light = new THREE.AmbientLight(0xffffff, 1);
+scene.add(light)
+
+const pointLight = new THREE.PointLight(0xffffff, 1)
+pointLight.position.set(2,2,0)
+scene.add(pointLight);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight,
   0.5,
