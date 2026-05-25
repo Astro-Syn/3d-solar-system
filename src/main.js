@@ -39,7 +39,7 @@ const scene = new THREE.Scene();
 //geometry.setAttribute('position', bufferAttribute)
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
-const material  = new THREE.MeshStandardMaterial();
+const material  = new THREE.MeshPhysicalMaterial();
 material.color = new THREE.Color('green');
 
 pane.addBinding(material, 'metalness', {
@@ -49,6 +49,18 @@ pane.addBinding(material, 'metalness', {
 })
 
 pane.addBinding(material, 'roughness', {
+  min: 0,
+  max: 1,
+  step: 0.01
+})
+
+pane.addBinding(material, 'reflectivity', {
+  min: 0,
+  max: 1, 
+  step: 0.01
+})
+
+pane.addBinding(material, 'clearcoat', {
   min: 0,
   max: 1,
   step: 0.01
@@ -73,10 +85,10 @@ scene.add(mesh2);
 
 //light
 
-const light = new THREE.AmbientLight(0xffffff, 1);
+const light = new THREE.AmbientLight(0xffffff, 0.4);
 scene.add(light)
 
-const pointLight = new THREE.PointLight(0xffffff, 1)
+const pointLight = new THREE.PointLight(0xffffff, 0.9)
 pointLight.position.set(2,2,0)
 scene.add(pointLight);
 
