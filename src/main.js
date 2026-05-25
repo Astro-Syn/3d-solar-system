@@ -13,15 +13,17 @@ const scene = new THREE.Scene();
 
 //const geometry = new THREE.SphereGeometry(1, 16, 16);
 //geometry.setAttribute('position', bufferAttribute)
-const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16)
+const geometry = new THREE.BoxGeometry(1, 1, 1);
 
 //const cubeGeometry = new THREE.BoxGeometry(1,1,1)
-const cubeMaterial = new THREE.MeshBasicMaterial({color: "green", wireframe: true});
-const cubeMesh = new THREE.Mesh(geometry, cubeMaterial);
+const cubeMaterial = new THREE.MeshBasicMaterial({color: "aqua", transparent: true, opacity: 0.5});
+const mesh = new THREE.Mesh(geometry, cubeMaterial);
+const mesh2 = new THREE.Mesh(geometry, cubeMaterial);
 
-scene.add(cubeMesh)
+mesh2.position.x = 2;
 
-
+scene.add(mesh);
+scene.add(mesh2);
 
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight,
