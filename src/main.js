@@ -25,8 +25,6 @@ pane.addBinding(params, 'lightIntensity', {
 });
 
 
-
-
 const scene = new THREE.Scene();
 
 //create custom geometry
@@ -39,6 +37,8 @@ const scene = new THREE.Scene();
 //geometry.setAttribute('position', bufferAttribute)
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
+const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
 const material  = new THREE.MeshPhysicalMaterial();
 material.color = new THREE.Color('green');
 
@@ -69,18 +69,26 @@ pane.addBinding(material, 'clearcoat', {
 
 //const cubeGeometry = new THREE.BoxGeometry(1,1,1)
 //const cubeMaterial = new THREE.MeshBasicMaterial({color: "white"});
-const mesh = new THREE.Mesh(geometry, material);
-const mesh2 = new THREE.Mesh(torusKnotGeometry, material);
+const cube = new THREE.Mesh(geometry, material);
+const knot = new THREE.Mesh(torusKnotGeometry, material);
+const sphere = new THREE.Mesh(sphereGeometry, material);
+sphere.geometry = sphereGeometry
+sphere.material = material
 
 
+
+const cylinder = new THREE.Mesh(cylinderGeometry, material)
+cylinder.geometry = cylinderGeometry
+cylinder.material = material
 //material
 
 
-mesh2.position.x = 2;
+knot.position.x = 2;
+sphere.position.x = 4;
+cylinder.position.x = -2;
 
 
-scene.add(mesh);
-scene.add(mesh2);
+scene.add(sphere, cylinder, cube, knot);
 
 
 //light
@@ -131,7 +139,14 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 })
 
+
+
 const renderLoop = () => {
+  scene.children.forEach((child) => {
+    if (child instanceof THREE.Mesh){
+      child.rotation.x += 0.01;
+    }
+  })
   controls.update()
     renderer.render(scene, camera)
     window.requestAnimationFrame(renderLoop);
