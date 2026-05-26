@@ -1,16 +1,39 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { Pane } from 'tweakpane';
-
-
-
+import { TextureLoader } from 'three';
 
 const pane = new Pane();
 
+
+const scene = new THREE.Scene();
+
 const params = {
-  color: '#00ff00',
+  color: '#ffffff',
   lightIntensity: 1
 };
+
+
+const textureLoader = new THREE.TextureLoader();
+
+
+//geometry
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
+const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
+const planeGeometry = new THREE.PlaneGeometry(1, 1);
+
+const material  = new THREE.MeshPhysicalMaterial();
+
+
+const grassTexture = textureLoader.load('/Images/wispy-grass-meadow_albedo.png')
+grassTexture.repeat.set(10, 10)
+grassTexture.wrapS = THREE.RepeatWrapping;
+grassTexture.wrapT = THREE.RepeatWrapping;
+material.map = grassTexture;
+
+
 
 pane.addBinding(params, 'color')
 .on('change', (ev) => {
@@ -24,23 +47,6 @@ pane.addBinding(params, 'lightIntensity', {
   pointLight.intensity = ev.value;
 });
 
-
-const scene = new THREE.Scene();
-
-//create custom geometry
-
-//const verticies = new Float32Array([0, 0, 0, 0, 2, 0, 2, 0, 0])
-
-//const bufferAttribute = new THREE.BufferAttribute(verticies, 3)
-
-//const geometry = new THREE.SphereGeometry(1, 16, 16);
-//geometry.setAttribute('position', bufferAttribute)
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
-const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
-const material  = new THREE.MeshPhysicalMaterial();
-material.color = new THREE.Color('green');
 
 pane.addBinding(material, 'metalness', {
   min: 0,
@@ -69,6 +75,7 @@ pane.addBinding(material, 'clearcoat', {
 
 //const cubeGeometry = new THREE.BoxGeometry(1,1,1)
 //const cubeMaterial = new THREE.MeshBasicMaterial({color: "white"});
+const plane = new THREE.Mesh(planeGeometry, material);
 const cube = new THREE.Mesh(geometry, material);
 const knot = new THREE.Mesh(torusKnotGeometry, material);
 const sphere = new THREE.Mesh(sphereGeometry, material);
@@ -86,10 +93,13 @@ cylinder.material = material
 knot.position.x = 2;
 sphere.position.x = 4;
 cylinder.position.x = -2;
+plane.position.y = 1.5;
+
+
 
 
 scene.add(sphere, cylinder, cube, knot);
-
+scene.add(plane)
 
 //light
 
@@ -100,9 +110,11 @@ const pointLight = new THREE.PointLight(0xffffff, 0.9)
 pointLight.position.set(2,2,0)
 scene.add(pointLight);
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight,
-  0.5,
-  400)
+const camera = new THREE.PerspectiveCamera(
+  35, 
+  window.innerWidth / window.innerHeight,
+  0.1,
+  2000)
 
 
 const aspectRatio = window.innerWidth / window.innerHeight
@@ -116,12 +128,14 @@ const aspectRatio = window.innerWidth / window.innerHeight
  // 200
 //)
 
-camera.position.z = 5
+camera.position.z = 10;
+camera.position.y = 5;
 
 const canvas = document.querySelector('canvas.threejs')
 
 const renderer = new THREE.WebGLRenderer({
-  canvas: canvas
+  canvas: canvas,
+  antialias: true,
 })
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -130,7 +144,7 @@ renderer.setPixelRatio(maxPixelRatio)
 
 const controls = new OrbitControls( camera, canvas)
 controls.enableDamping = true;
-controls.autoRotate = true;
+controls.autoRotate = false ;
 
 
 window.addEventListener('resize', () => {
@@ -144,7 +158,7 @@ window.addEventListener('resize', () => {
 const renderLoop = () => {
   scene.children.forEach((child) => {
     if (child instanceof THREE.Mesh){
-      child.rotation.x += 0.01;
+      child.rotation.y += 0.01;
     }
   })
   controls.update()
