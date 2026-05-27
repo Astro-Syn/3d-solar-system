@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { Pane } from 'tweakpane';
 import { TextureLoader } from 'three';
+import { texture } from 'three/tsl';
 
 const pane = new Pane();
 
@@ -24,11 +25,13 @@ const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
 const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
 
-const material  = new THREE.MeshPhysicalMaterial();
+const material  = new THREE.MeshStandardMaterial();
 
 
-const grassTexture = textureLoader.load('/Images/wispy-grass-meadow_albedo.png')
-grassTexture.repeat.set(10, 10)
+const grassTexture = textureLoader.load('/Images/wispy-grass-meadow_albedo.png');
+const grassHeight = textureLoader.load('/Images/wispy-grass-meadow_height.png')
+const grassRoughness = textureLoader.load('/Images/wispy-grass-meadow_roughness.png')
+grassTexture.repeat.set(0.5, 0.5)
 grassTexture.wrapS = THREE.RepeatWrapping;
 grassTexture.wrapT = THREE.RepeatWrapping;
 material.map = grassTexture;
@@ -60,17 +63,17 @@ pane.addBinding(material, 'roughness', {
   step: 0.01
 })
 
-pane.addBinding(material, 'reflectivity', {
-  min: 0,
-  max: 1, 
-  step: 0.01
-})
+//pane.addBinding(material, 'reflectivity', {
+//  min: 0,
+//  max: 1, 
+//  step: 0.01
+//})
 
-pane.addBinding(material, 'clearcoat', {
-  min: 0,
-  max: 1,
-  step: 0.01
-})
+//pane.addBinding(material, 'clearcoat', {
+//  min: 0,
+//  max: 1,
+//  step: 0.01
+//})
 
 
 //const cubeGeometry = new THREE.BoxGeometry(1,1,1)
@@ -114,7 +117,7 @@ const camera = new THREE.PerspectiveCamera(
   35, 
   window.innerWidth / window.innerHeight,
   0.1,
-  2000)
+  1500)
 
 
 const aspectRatio = window.innerWidth / window.innerHeight
@@ -158,7 +161,7 @@ window.addEventListener('resize', () => {
 const renderLoop = () => {
   scene.children.forEach((child) => {
     if (child instanceof THREE.Mesh){
-      child.rotation.y += 0.01;
+      child.rotation.y += 0.00;
     }
   })
   controls.update()
