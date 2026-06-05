@@ -14,7 +14,7 @@ const params = {
   lightIntensity: 1
 };
 
-
+//texture loader
 const textureLoader = new THREE.TextureLoader();
 
 
@@ -41,7 +41,107 @@ const earth = new THREE.Mesh(sphereGeometry, earthMaterial)
 earth.position.x = 10;
 
 
-scene.add(sun, earth)
+scene.add(sun)
+
+// const planets = [
+//   {
+//     name: 'Mercury',
+//     radius: 0.5,
+//     distance: 10,
+//     speed: 0.01,
+//     material: mercuryMaterial,
+//     moons: [],
+//   },
+//   {
+//     name: 'Venus',
+//     radius: 0.8,
+//     distance: 15,
+//     speed: 0.007,
+//     material: venusMaterial,
+//     moons: [],
+//   },
+//   {
+//     name: 'Earth',
+//     radius: 1,
+//     distance: 20,
+//     speed: 0.005,
+//     material: earthMaterial,
+//     moons: [
+//       {
+//         name: 'Moon',
+//         radius: 0.3,
+//         distance: 3,
+//         speed: 0.015,
+
+//       }
+//     ]
+//   },
+//   {
+//     name: 'Mars',
+//     radius: 0.5,
+//     distance: 10,
+//     speed: 0.01,
+//     material: marsMaterial,
+//     moons: [
+//       {
+//         name: "Phobos",
+//         radius: 0.1,
+//         distance: 2,
+//         speed: 0.02,
+//     },
+//     {
+//       name: "Deimos",
+//       radius: 0.2,
+//       distance: 3,
+//       speed: 0.015,
+//       color: 'orange',
+//     }
+//   ],
+//   },
+//   {
+//     name: 'Jupiter',
+//     radius: 0.5,
+//     distance: 10,
+//     speed: 0.01,
+//     material: jupiterMaterial,
+//     moons: [],
+//   },
+//   {
+//     name: 'Saturn',
+//     radius: 0.5,
+//     distance: 10,
+//     speed: 0.01,
+//     material: saturnMaterial,
+//     moons: [],
+//   },
+//   {
+//     name: 'Uranus',
+//     radius: 0.5,
+//     distance: 10,
+//     speed: 0.01,
+//     material: uranusMaterial,
+//     moons: [],
+//   },
+//   {
+//     name: 'Neptune',
+//     radius: 0.5,
+//     distance: 10,
+//     speed: 0.01,
+//     material: neptuneMaterial,
+//     moons: [],
+//   },
+//   {
+//     name: 'Pluto',
+//     radius: 0.5,
+//     distance: 10,
+//     speed: 0.01,
+//     material: plutoMaterial,
+//     moons: [],
+//   },
+// ]
+
+scene.add(earth)
+
 
 
 const moonMaterial = new THREE.MeshBasicMaterial({
@@ -57,10 +157,6 @@ earth.add(moon)
 
 
 //pane controls
-
-
-
-
 
 
 //light
@@ -115,11 +211,13 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 })
 
-
+//initialize a clock
+const clock = new THREE.Clock()
 
 const renderLoop = () => {
 
-  earth.rotation.y += 0.01
+
+  //moon.position.x = Math.sin(elapsedTime) * 2
 
   controls.update()
     renderer.render(scene, camera)
