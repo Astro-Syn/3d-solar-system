@@ -18,91 +18,50 @@ const params = {
 const textureLoader = new THREE.TextureLoader();
 
 
-//geometry
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const torusKnotGeometry = new THREE.TorusKnotGeometry(0.5, 0.15, 100, 16);
-const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
-const planeGeometry = new THREE.PlaneGeometry(1, 1);
+//planets
 
-const material  = new THREE.MeshStandardMaterial();
+const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+const sunMaterial = new THREE.MeshBasicMaterial(
+  {
+    color: 'yellow'
+  }
+)
 
+const sun = new THREE.Mesh(sphereGeometry, sunMaterial)
 
-const grassTexture = textureLoader.load('/Images/wispy-grass-meadow_albedo.png');
-const grassHeight = textureLoader.load('/Images/wispy-grass-meadow_height.png')
-const grassRoughness = textureLoader.load('/Images/wispy-grass-meadow_roughness.png')
-grassTexture.repeat.set(0.5, 0.5)
-grassTexture.wrapS = THREE.RepeatWrapping;
-grassTexture.wrapT = THREE.RepeatWrapping;
-material.map = grassTexture;
+sun.scale.setScalar(5);
 
 
-
-pane.addBinding(params, 'color')
-.on('change', (ev) => {
-  material.color.set(ev.value);
-});
-
-pane.addBinding(params, 'lightIntensity', {
-  min: 0,
-  max: 10
-}).on('change', (ev) => {
-  pointLight.intensity = ev.value;
-});
-
-
-pane.addBinding(material, 'metalness', {
-  min: 0,
-  max: 1, 
-  step: 0.01
+const earthMaterial = new THREE.MeshBasicMaterial({
+  color: 'green'
 })
 
-pane.addBinding(material, 'roughness', {
-  min: 0,
-  max: 1,
-  step: 0.01
+const earth = new THREE.Mesh(sphereGeometry, earthMaterial)
+
+earth.position.x = 10;
+
+
+scene.add(sun, earth)
+
+
+const moonMaterial = new THREE.MeshBasicMaterial({
+  color: 'white'
 })
 
-//pane.addBinding(material, 'reflectivity', {
-//  min: 0,
-//  max: 1, 
-//  step: 0.01
-//})
-
-//pane.addBinding(material, 'clearcoat', {
-//  min: 0,
-//  max: 1,
-//  step: 0.01
-//})
+const moon = new THREE.Mesh(sphereGeometry, moonMaterial)
 
 
-//const cubeGeometry = new THREE.BoxGeometry(1,1,1)
-//const cubeMaterial = new THREE.MeshBasicMaterial({color: "white"});
-const plane = new THREE.Mesh(planeGeometry, material);
-const cube = new THREE.Mesh(geometry, material);
-const knot = new THREE.Mesh(torusKnotGeometry, material);
-const sphere = new THREE.Mesh(sphereGeometry, material);
-sphere.geometry = sphereGeometry
-sphere.material = material
+moon.scale.setScalar(0.3);
+moon.position.x = 2
+earth.add(moon)
 
 
-
-const cylinder = new THREE.Mesh(cylinderGeometry, material)
-cylinder.geometry = cylinderGeometry
-cylinder.material = material
-//material
-
-
-knot.position.x = 2;
-sphere.position.x = 4;
-cylinder.position.x = -2;
-plane.position.y = 1.5;
+//pane controls
 
 
 
 
-scene.add(sphere, cylinder, cube, knot);
-scene.add(plane)
+
 
 //light
 
@@ -159,11 +118,9 @@ window.addEventListener('resize', () => {
 
 
 const renderLoop = () => {
-  scene.children.forEach((child) => {
-    if (child instanceof THREE.Mesh){
-      child.rotation.y += 0.00;
-    }
-  })
+
+  earth.rotation.y += 0.01
+
   controls.update()
     renderer.render(scene, camera)
     window.requestAnimationFrame(renderLoop);
