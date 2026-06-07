@@ -17,13 +17,28 @@ const params = {
 //texture loader
 const textureLoader = new THREE.TextureLoader();
 
+const sunTexture = textureLoader.load(
+  '/Images/sun-texture.jpg'
+)
+const venusTexture = textureLoader.load('/Images/venus-texture.jpg')
+const mercuryTexture = textureLoader.load('/Images/mercury-texture.jpg')
+const earthTexture = textureLoader.load('/Images/earth-texture.jpg')
+const marsTexture = textureLoader.load('/Images/mars-texture.webp')
+const jupiterTexture = textureLoader.load('/Images/jupiter-texture.jpg')
+const saturnTexture = textureLoader.load('/Images/saturn-texture.jpg')
+const saturnRingTexture = textureLoader.load('/Images/saturn-ring-texture.png')
+const uranusTexture = textureLoader.load('/Images/uranus-texture.jpg')
+const neptuneTexture = textureLoader.load('/Images/neptune-texture.jpg')
+const plutoTexture = textureLoader.load('/Images/pluto-texture.png')
+const moonTexture = textureLoader.load('/Images/moon-texture1.jpg')
+
 
 //planets
 
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
-const sunMaterial = new THREE.MeshBasicMaterial(
+const sunMaterial = new THREE.MeshStandardMaterial(
   {
-    color: 'yellow'
+    map: sunTexture
   }
 )
 
@@ -31,121 +46,177 @@ const sun = new THREE.Mesh(sphereGeometry, sunMaterial)
 
 sun.scale.setScalar(5);
 
+const mercuryMaterial = new THREE.MeshStandardMaterial(
+  {
+    map: mercuryTexture
+  }
+)
 
-const earthMaterial = new THREE.MeshBasicMaterial({
-  color: 'green'
+const mercury = new THREE.Mesh(sphereGeometry, mercuryMaterial)
+
+
+const venusMaterial = new THREE.MeshStandardMaterial({
+  map: venusTexture
+})
+
+const venus = new THREE.Mesh(sphereGeometry, venusMaterial)
+
+
+const earthMaterial = new THREE.MeshStandardMaterial({
+  map: earthTexture
 })
 
 const earth = new THREE.Mesh(sphereGeometry, earthMaterial)
 
-earth.position.x = 10;
+
+
+const marsMaterial = new THREE.MeshStandardMaterial({
+  map: marsTexture
+})
+
+const mars = new THREE.Mesh(sphereGeometry, marsMaterial)
+
+
+
+const jupiterMaterial = new THREE.MeshStandardMaterial({
+  map: jupiterTexture
+})
+
+const jupiter = new THREE.Mesh(sphereGeometry, jupiterMaterial)
+
+
+const saturnMaterial = new THREE.MeshStandardMaterial({
+  map: saturnTexture
+}) 
+const saturn  = new THREE.Mesh(sphereGeometry, saturnMaterial)
+
+
+const uranusMaterial = new THREE.MeshStandardMaterial({
+  map: uranusTexture
+}) 
+const uranus = new THREE.Mesh(sphereGeometry, uranusMaterial)
+
+
+const neptuneMaterial = new THREE.MeshStandardMaterial({
+  map: neptuneTexture
+})
+
+const neptune = new THREE.Mesh(sphereGeometry, neptuneMaterial) 
+
+
+const plutoMaterial = new THREE.MeshStandardMaterial({
+  map: plutoTexture
+})
+const pluto = new THREE.Mesh(sphereGeometry, plutoMaterial) 
+
 
 
 scene.add(sun)
 
-// const planets = [
-//   {
-//     name: 'Mercury',
-//     radius: 0.5,
-//     distance: 10,
-//     speed: 0.01,
-//     material: mercuryMaterial,
-//     moons: [],
-//   },
-//   {
-//     name: 'Venus',
-//     radius: 0.8,
-//     distance: 15,
-//     speed: 0.007,
-//     material: venusMaterial,
-//     moons: [],
-//   },
-//   {
-//     name: 'Earth',
-//     radius: 1,
-//     distance: 20,
-//     speed: 0.005,
-//     material: earthMaterial,
-//     moons: [
-//       {
-//         name: 'Moon',
-//         radius: 0.3,
-//         distance: 3,
-//         speed: 0.015,
 
-//       }
-//     ]
-//   },
-//   {
-//     name: 'Mars',
-//     radius: 0.5,
-//     distance: 10,
-//     speed: 0.01,
-//     material: marsMaterial,
-//     moons: [
-//       {
-//         name: "Phobos",
-//         radius: 0.1,
-//         distance: 2,
-//         speed: 0.02,
-//     },
-//     {
-//       name: "Deimos",
-//       radius: 0.2,
-//       distance: 3,
-//       speed: 0.015,
-//       color: 'orange',
-//     }
-//   ],
-//   },
-//   {
-//     name: 'Jupiter',
-//     radius: 0.5,
-//     distance: 10,
-//     speed: 0.01,
-//     material: jupiterMaterial,
-//     moons: [],
-//   },
-//   {
-//     name: 'Saturn',
-//     radius: 0.5,
-//     distance: 10,
-//     speed: 0.01,
-//     material: saturnMaterial,
-//     moons: [],
-//   },
-//   {
-//     name: 'Uranus',
-//     radius: 0.5,
-//     distance: 10,
-//     speed: 0.01,
-//     material: uranusMaterial,
-//     moons: [],
-//   },
-//   {
-//     name: 'Neptune',
-//     radius: 0.5,
-//     distance: 10,
-//     speed: 0.01,
-//     material: neptuneMaterial,
-//     moons: [],
-//   },
-//   {
-//     name: 'Pluto',
-//     radius: 0.5,
-//     distance: 10,
-//     speed: 0.01,
-//     material: plutoMaterial,
-//     moons: [],
-//   },
-// ]
 
-scene.add(earth)
+
+const planets = [
+  {
+    name: 'Mercury',
+    radius: 0.5,
+    distance: 10,
+    speed: 0.01,
+    material: mercuryMaterial,
+    moons: [],
+  },
+  {
+    name: 'Venus',
+    radius: 0.8,
+    distance: 15,
+    speed: 0.007,
+    material: venusMaterial,
+    moons: [],
+  },
+  {
+    name: 'Earth',
+    radius: 1,
+    distance: 20,
+    speed: 0.005,
+    material: earthMaterial,
+    moons: [
+      {
+        name: 'Moon',
+        radius: 0.3,
+        distance: 3,
+        speed: 0.015,
+
+      }
+    ]
+  },
+  {
+    name: 'Mars',
+    radius: 1.5,
+    distance: 20,
+    speed: 0.01,
+    material: marsMaterial,
+    moons: [
+      {
+        name: "Phobos",
+        radius: 0.1,
+        distance: 2,
+        speed: 0.02,
+    },
+    {
+      name: "Deimos",
+      radius: 0.2,
+      distance: 3,
+      speed: 0.015,
+      color: 'orange',
+    }
+  ],
+  },
+  {
+    name: 'Jupiter',
+    radius: 3,
+    distance: 25,
+    speed: 0.01,
+    material: jupiterMaterial,
+    moons: [],
+  },
+  {
+    name: 'Saturn',
+    radius: 1.5,
+    distance: 30,
+    speed: 0.01,
+    material: saturnMaterial,
+    moons: [],
+  },
+  {
+    name: 'Uranus',
+    radius: 1.2,
+    distance: 35,
+    speed: 0.01,
+    material: uranusMaterial,
+    moons: [],
+  },
+  {
+    name: 'Neptune',
+    radius: 1.2,
+    distance: 40,
+    speed: 0.01,
+    material: neptuneMaterial,
+    moons: [],
+  },
+  {
+    name: 'Pluto',
+    radius: 0.4,
+    distance: 45,
+    speed: 0.01,
+    material: plutoMaterial,
+    moons: [],
+  },
+]
 
 
 
 const moonMaterial = new THREE.MeshBasicMaterial({
-  color: 'white'
+  map: moonTexture
 })
 
 const moon = new THREE.Mesh(sphereGeometry, moonMaterial)
@@ -156,7 +227,18 @@ moon.position.x = 2
 earth.add(moon)
 
 
+
 //pane controls
+
+
+//planet loop
+
+const planetMeshes = planets.map((planet) => {
+  const planetMesh = new THREE.Mesh(sphereGeometry, planet.material)
+  planetMesh.scale.setScalar(planet.radius)
+  planetMesh.position.x = planet.distance
+  scene.add(planetMesh)
+})
 
 
 //light
