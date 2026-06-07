@@ -44,7 +44,7 @@ const sunMaterial = new THREE.MeshStandardMaterial(
 
 const sun = new THREE.Mesh(sphereGeometry, sunMaterial)
 
-sun.scale.setScalar(5);
+sun.scale.setScalar(10);
 
 const mercuryMaterial = new THREE.MeshStandardMaterial(
   {
@@ -120,15 +120,15 @@ const planets = [
   {
     name: 'Mercury',
     radius: 0.5,
-    distance: 10,
+    distance: 15,
     speed: 0.01,
     material: mercuryMaterial,
     moons: [],
   },
   {
     name: 'Venus',
-    radius: 0.8,
-    distance: 15,
+    radius: 0.9,
+    distance: 20,
     speed: 0.007,
     material: venusMaterial,
     moons: [],
@@ -136,14 +136,14 @@ const planets = [
   {
     name: 'Earth',
     radius: 1,
-    distance: 20,
+    distance: 25,
     speed: 0.005,
     material: earthMaterial,
     moons: [
       {
         name: 'Moon',
-        radius: 0.3,
-        distance: 3,
+        radius: 0.2,
+        distance: 1.6,
         speed: 0.015,
 
       }
@@ -151,21 +151,21 @@ const planets = [
   },
   {
     name: 'Mars',
-    radius: 1.5,
-    distance: 20,
+    radius: 0.8,
+    distance: 30,
     speed: 0.01,
     material: marsMaterial,
     moons: [
       {
         name: "Phobos",
         radius: 0.1,
-        distance: 2,
+        distance: 1.9,
         speed: 0.02,
     },
     {
       name: "Deimos",
       radius: 0.2,
-      distance: 3,
+      distance: 1.5,
       speed: 0.015,
       color: 'orange',
     }
@@ -174,7 +174,7 @@ const planets = [
   {
     name: 'Jupiter',
     radius: 3,
-    distance: 25,
+    distance: 37,
     speed: 0.01,
     material: jupiterMaterial,
     moons: [],
@@ -182,7 +182,7 @@ const planets = [
   {
     name: 'Saturn',
     radius: 1.5,
-    distance: 30,
+    distance: 45,
     speed: 0.01,
     material: saturnMaterial,
     moons: [],
@@ -190,7 +190,7 @@ const planets = [
   {
     name: 'Uranus',
     radius: 1.2,
-    distance: 35,
+    distance: 50,
     speed: 0.01,
     material: uranusMaterial,
     moons: [],
@@ -198,7 +198,7 @@ const planets = [
   {
     name: 'Neptune',
     radius: 1.2,
-    distance: 40,
+    distance: 55,
     speed: 0.01,
     material: neptuneMaterial,
     moons: [],
@@ -206,7 +206,7 @@ const planets = [
   {
     name: 'Pluto',
     radius: 0.4,
-    distance: 45,
+    distance: 60,
     speed: 0.01,
     material: plutoMaterial,
     moons: [],
@@ -230,20 +230,42 @@ earth.add(moon)
 
 //pane controls
 
+//planet functions
+
+const createPlanet = (planet) => {
+   const planetMesh = new THREE.Mesh(sphereGeometry, planet.material)
+  planetMesh.scale.setScalar(planet.radius)
+  planetMesh.position.x = planet.distance
+  return planetMesh
+}
+
+const createMoon = (moon) => {
+   const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial)
+   
+     moonMesh.scale.setScalar(moon.radius)
+  moonMesh.position.x = moon.distance
+  return moonMesh
+}
+
 
 //planet loop
 
 const planetMeshes = planets.map((planet) => {
-  const planetMesh = new THREE.Mesh(sphereGeometry, planet.material)
-  planetMesh.scale.setScalar(planet.radius)
-  planetMesh.position.x = planet.distance
+ const planetMesh = createPlanet(planet)
   scene.add(planetMesh)
+
+  planet.moons.forEach((moon) => {
+   const moonMesh = createMoon(moon)
+    planetMesh.add(moonMesh)
+  })
+  return planetMesh
 })
+
 
 
 //light
 
-const light = new THREE.AmbientLight(0xffffff, 0.4);
+const light = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(light)
 
 const pointLight = new THREE.PointLight(0xffffff, 0.9)
@@ -297,9 +319,11 @@ window.addEventListener('resize', () => {
 const clock = new THREE.Clock()
 
 const renderLoop = () => {
+  planetMeshes.forEach((planet) => {
+    planet.rotation.y += 0.01
+  })
 
 
-  //moon.position.x = Math.sin(elapsedTime) * 2
 
   controls.update()
     renderer.render(scene, camera)
