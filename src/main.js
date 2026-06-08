@@ -9,13 +9,12 @@ const pane = new Pane();
 
 const scene = new THREE.Scene();
 
-const params = {
-  color: '#ffffff',
-  lightIntensity: 1
-};
+
 
 //texture loader
 const textureLoader = new THREE.TextureLoader();
+const cubeTextureLoader = new THREE.CubeTextureLoader()
+cubeTextureLoader.setPath('/Images/Galaxy-Cube-Map/')
 
 const sunTexture = textureLoader.load(
   '/Images/sun-texture.jpg'
@@ -33,10 +32,17 @@ const plutoTexture = textureLoader.load('/Images/pluto-texture.png')
 const moonTexture = textureLoader.load('/Images/moon-texture1.jpg')
 
 
+const backgroundCubeMap = cubeTextureLoader.load([
+  'px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'
+])
+
+scene.background = backgroundCubeMap
+
+scene.backgroundIntensity = 0.2;
 //planets
 
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
-const sunMaterial = new THREE.MeshStandardMaterial(
+const sunMaterial = new THREE.MeshBasicMaterial(
   {
     map: sunTexture
   }
@@ -121,7 +127,7 @@ const planets = [
     name: 'Mercury',
     radius: 0.5,
     distance: 15,
-    speed: 0.01,
+    speed: 0.009,
     material: mercuryMaterial,
     moons: [],
   },
@@ -129,7 +135,7 @@ const planets = [
     name: 'Venus',
     radius: 0.9,
     distance: 20,
-    speed: 0.007,
+    speed: 0.008,
     material: venusMaterial,
     moons: [],
   },
@@ -137,7 +143,7 @@ const planets = [
     name: 'Earth',
     radius: 1,
     distance: 25,
-    speed: 0.005,
+    speed: 0.007,
     material: earthMaterial,
     moons: [
       {
@@ -153,7 +159,7 @@ const planets = [
     name: 'Mars',
     radius: 0.8,
     distance: 30,
-    speed: 0.01,
+    speed: 0.006,
     material: marsMaterial,
     moons: [
       {
@@ -175,15 +181,15 @@ const planets = [
     name: 'Jupiter',
     radius: 3,
     distance: 37,
-    speed: 0.01,
+    speed: 0.005,
     material: jupiterMaterial,
     moons: [],
   },
   {
     name: 'Saturn',
-    radius: 1.5,
+    radius: 2.5,
     distance: 45,
-    speed: 0.01,
+    speed: 0.004,
     material: saturnMaterial,
     moons: [],
   },
@@ -191,7 +197,7 @@ const planets = [
     name: 'Uranus',
     radius: 1.2,
     distance: 50,
-    speed: 0.01,
+    speed: 0.003,
     material: uranusMaterial,
     moons: [],
   },
@@ -199,7 +205,7 @@ const planets = [
     name: 'Neptune',
     radius: 1.2,
     distance: 55,
-    speed: 0.01,
+    speed: 0.002,
     material: neptuneMaterial,
     moons: [],
   },
@@ -207,7 +213,7 @@ const planets = [
     name: 'Pluto',
     radius: 0.4,
     distance: 60,
-    speed: 0.01,
+    speed: 0.001,
     material: plutoMaterial,
     moons: [],
   },
@@ -225,7 +231,6 @@ const moon = new THREE.Mesh(sphereGeometry, moonMaterial)
 moon.scale.setScalar(0.3);
 moon.position.x = 2
 earth.add(moon)
-
 
 
 //pane controls
@@ -264,13 +269,13 @@ const planetMeshes = planets.map((planet) => {
 
 
 //light
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.02);
+scene.add(ambientLight);
 
-const light = new THREE.AmbientLight(0xffffff, 0.5);
-scene.add(light)
 
-const pointLight = new THREE.PointLight(0xffffff, 0.9)
-pointLight.position.set(2,2,0)
-scene.add(pointLight);
+const pointLight = new THREE.PointLight(0xfdefb2, 5000)
+pointLight.position.set(0, 0, 0)
+sun.add(pointLight);
 
 const camera = new THREE.PerspectiveCamera(
   35, 
@@ -319,8 +324,15 @@ window.addEventListener('resize', () => {
 const clock = new THREE.Clock()
 
 const renderLoop = () => {
-  planetMeshes.forEach((planet) => {
-    planet.rotation.y += 0.01
+  planetMeshes.forEach((planet, planetIndex) => {
+    planet.rotation.y += planets[planetIndex].speed
+    planet.position.x = Math.sin(planet.rotation.y) * planets[planetIndex].distance
+    planet.position.z = Math.cos(planet.rotation.y) * planets[planetIndex].distance
+    planet.children.forEach((moon, moonIndex) => {
+      moon.rotation.y += planets[planetIndex].moons[moonIndex].speed
+      moon.position.x = Math.sin(moon.rotation.y) * planets[planetIndex].moons[moonIndex].distance
+      moon.position.z = Math.cos(moon.rotation.y) * planets[planetIndex].moons[moonIndex].distance
+    })
   })
 
 
