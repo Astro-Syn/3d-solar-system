@@ -14,22 +14,22 @@ const scene = new THREE.Scene();
 //texture loader
 const textureLoader = new THREE.TextureLoader();
 const cubeTextureLoader = new THREE.CubeTextureLoader()
-cubeTextureLoader.setPath('/Images/Galaxy-Cube-Map/')
+cubeTextureLoader.setPath('Images/Galaxy-Cube-Map/')
 
 const sunTexture = textureLoader.load(
-  '/Images/sun-texture.jpg'
+  'Images/sun-texture.jpg'
 )
-const venusTexture = textureLoader.load('/Images/venus-texture.jpg')
-const mercuryTexture = textureLoader.load('/Images/mercury-texture.jpg')
-const earthTexture = textureLoader.load('/Images/earth-texture.jpg')
-const marsTexture = textureLoader.load('/Images/mars-texture.webp')
-const jupiterTexture = textureLoader.load('/Images/jupiter-texture.jpg')
-const saturnTexture = textureLoader.load('/Images/saturn-texture.jpg')
-const saturnRingTexture = textureLoader.load('/Images/saturn-ring-texture.png')
-const uranusTexture = textureLoader.load('/Images/uranus-texture.jpg')
-const neptuneTexture = textureLoader.load('/Images/neptune-texture.jpg')
-const plutoTexture = textureLoader.load('/Images/pluto-texture.png')
-const moonTexture = textureLoader.load('/Images/moon-texture1.jpg')
+const venusTexture = textureLoader.load('Images/venus-texture.jpg')
+const mercuryTexture = textureLoader.load('Images/mercury-texture.jpg')
+const earthTexture = textureLoader.load('Images/earth-texture.jpg')
+const marsTexture = textureLoader.load('Images/mars-texture.webp')
+const jupiterTexture = textureLoader.load('Images/jupiter-texture.jpg')
+const saturnTexture = textureLoader.load('Images/saturn-texture.jpg')
+const saturnRingTexture = textureLoader.load('Images/saturn-ring-texture.png')
+const uranusTexture = textureLoader.load('Images/uranus-texture.jpg')
+const neptuneTexture = textureLoader.load('Images/neptune-texture.jpg')
+const plutoTexture = textureLoader.load('Images/pluto-texture.png')
+const moonTexture = textureLoader.load('Images/moon-texture1.jpg')
 
 
 const backgroundCubeMap = cubeTextureLoader.load([
